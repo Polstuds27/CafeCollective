@@ -1,7 +1,25 @@
+"use client"
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Footer(){
-    return(
+
+    const [footerDisabled, setFooterDisabled] = useState(false);
+    const pathName = usePathname();
+
+    useEffect(()=>{
+        if(pathName === "/sign-in" || pathName === "/sign-up"){
+            setFooterDisabled(true); 
+        }else{
+            setFooterDisabled(false);
+        }
+    },[pathName]);
+    
+    if(footerDisabled) return null;
+
+     return(
         <>
             <footer className="flex w-full justify-between pt-5 pb-7 pr-5 pl-5 border-t-1 border-[#c08b4b94]">
                 <p className="text-[#77746c] text-xs font-light">© 2025 Cafe Collective</p>
@@ -13,5 +31,6 @@ export default function Footer(){
                 </span>
             </footer>
         </>
-    );
+        );
+        
 }
