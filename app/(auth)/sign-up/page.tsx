@@ -114,7 +114,7 @@ export default function SignUpPage(){
                   type="text"
                   value={username}
                   onChange={(e)=>{checkUsername(e.target.value)}}
-                  className={`p-3 text-sm border-1 outline-none ${emailErrorMsg === "" ? "border-[#c08b4b94]": "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
+                  className={`p-3 text-sm border-1 outline-none ${usernameErrorMsg === "" ? "border-[#c08b4b94]": "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Username"
                 />
               </span>
