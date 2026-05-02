@@ -1,14 +1,10 @@
 "use client"
 
 import Link from "next/link";
-import { Eye, EyeClosed } from "lucide-react";
-import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 
 export default function ForgotPasswordPage(){
-
-  const [showPassword, setShowPassword] = useState(false);
-
+    const router = useRouter();
 
   return (
     <>
@@ -31,8 +27,16 @@ export default function ForgotPasswordPage(){
                   placeholder="Email"
                 />
               </span>
+              
+              <p className="text-wrap text-center w-full text-xs">
+                Didn't received an email? <Link href="/sign-in" className="underline text-[#c08b4b]">Click here to resend.</Link>
+              </p>
+            
 
-              <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2">
+              <button
+                type="button"
+                onClick={()=> router.push("/reset-password")}
+                className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2">
                 Next
               </button>
        

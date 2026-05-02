@@ -17,7 +17,7 @@ export default function SignUpPage(){
         <Link href="/" className="text-2xl mb-4 text-[#c08b4b] font-bold">Cafe Collective</Link>
 
         <div className="flex flex-col w-[350px]  bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl pr-10 pl-10 pt-5 pb-5 items-center">
-            <h1 className="text-xl font-semibold text-white mb-[3px]">Let's get Started</h1>
+            <h1 className="text-xl font-semibold text-white mb-[3px]">Join the Community</h1>
             <h2 className="text-xs mb-4">Discover, review, and share great coffee spots.</h2>
 
            
