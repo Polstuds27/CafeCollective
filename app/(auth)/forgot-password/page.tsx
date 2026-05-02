@@ -2,9 +2,27 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ForgotPasswordPage(){
     const router = useRouter();
+
+    const [email, setEmail] = useState("");
+    const [emailErrorMsg, setEmailErrorMsg] = useState("");
+
+    function checkEmail(email:string){
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(email === "" || null){
+      setEmailErrorMsg("Please enter your email.");
+    }else if(!regex.test(email)){
+      setEmailErrorMsg("Invalid email");
+    }else{
+      setEmailErrorMsg("");
+    }
+
+    setEmail(email);
+  }
 
   return (
     <>
@@ -21,9 +39,16 @@ export default function ForgotPasswordPage(){
                 <label className="text-sm">
                   Email
                 </label>
+
+                <p className="text-xs text-[#E85D4A]">
+                    {emailErrorMsg}
+                </p>
+
                 <input
                   type="text"
-                  className=" p-3 text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  value={email}
+                  onChange={(e)=>{checkEmail(e.target.value)}}
+                  className={`p-3 text-sm border-1 outline-none ${emailErrorMsg === "" ? "border-[#c08b4b94]" : "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Email"
                 />
               </span>

@@ -2,13 +2,93 @@
 
 import Link from "next/link";
 import { Eye, EyeClosed } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function SignUpPage(){
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [emailErrorMsg, setEmailErrorMsg] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState(""); 
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordErrorMsg, setConfirmPasswordErrorMsg] = useState("");
+  const [username, setUsername] = useState("");
+  const [usernameErrorMsg, setUsernameErrorMsg] = useState("");
+
+  const hasUppercase = /[A-Z]/;
+  const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+  const hasNumber = /[0-9]/;
+
+  function checkEmail(email:string){
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(email === "" || null){
+      setEmailErrorMsg("Please enter your email.");
+    }else if(!regex.test(email)){
+      setEmailErrorMsg("Invalid email");
+    }else{
+      setEmailErrorMsg("");
+    }
+
+    setEmail(email);
+  }
+
+  function checkUsername(username:string){
+    if(username === ""){
+      setUsernameErrorMsg("Please enter a username.");
+    }else{
+      setUsernameErrorMsg("");
+    }
+
+    setUsername(username);
+  }
+
+
+  useEffect(()=>{
+    if(confirmPassword === "") return;
+
+     if (confirmPassword !== password) {
+      setConfirmPasswordErrorMsg("Passwords do not match.")
+    } else {
+      setConfirmPasswordErrorMsg("")  
+    }
+  },[password, confirmPassword]);
+
+  function checkPassword(password:string){
+  
+
+    if(password === "" || null){
+      setPasswordErrorMsg("Please enter a password.");
+    }else if(!hasUppercase.test(password) ||
+      !hasSpecialChar.test(password) ||
+      !hasNumber.test(password)
+     ){
+      setPasswordErrorMsg("Your password must atleast contain: 1 uppercase letter, 1 special character and 1 number.");
+    }else if(password.length < 8){
+      setPasswordErrorMsg("Your password must atleast be 8 characters long.");
+    }else{
+      setPasswordErrorMsg("");
+    }
+
+    setPassword(password);
+
+  }
+
+  function checkConfirmPassword(confirmPassword:string){
+
+    if(confirmPassword === "" || null){
+      setConfirmPasswordErrorMsg("Please enter a password.");
+    }else{
+      setConfirmPasswordErrorMsg("");
+      
+    }
+
+    setConfirmPassword(confirmPassword);
+  }
 
 
   return (
@@ -19,8 +99,6 @@ export default function SignUpPage(){
         <div className="flex flex-col w-[350px]  bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl pr-10 pl-10 pt-5 pb-5 items-center">
             <h1 className="text-xl font-semibold text-white mb-[3px]">Join the Community</h1>
             <h2 className="text-xs mb-4">Discover, review, and share great coffee spots.</h2>
-
-           
    
             <form className="flex flex-col w-full gap-3">
             
@@ -28,9 +106,15 @@ export default function SignUpPage(){
                 <label className="text-sm">
                   Username
                 </label>
+
+                <p className="text-xs text-[#E85D4A]">
+                  {usernameErrorMsg}
+                </p>
                 <input
                   type="text"
-                  className=" p-3 text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  value={username}
+                  onChange={(e)=>{checkUsername(e.target.value)}}
+                  className={`p-3 text-sm border-1 outline-none ${emailErrorMsg === "" ? "border-[#c08b4b94]": "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Username"
                 />
               </span>
@@ -40,9 +124,17 @@ export default function SignUpPage(){
                 <label className="text-sm">
                   Email
                 </label>
+
+                <p className="text-xs text-[#E85D4A]">
+                  {emailErrorMsg}
+                </p>
+
+
                 <input
                   type="text"
-                  className=" p-3 border-1 text-sm outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  onChange={(e)=>{checkEmail(e.target.value)}}
+                  value={email}
+                  className={`p-3 text-sm border-1 outline-none ${emailErrorMsg === "" ? "border-[#c08b4b94]": "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Email"
                 />
               </span>
@@ -53,10 +145,16 @@ export default function SignUpPage(){
                   Password
                 </label>
 
+                <p className="text-xs text-[#E85D4A]">
+                  {passwordErrorMsg}
+                </p>
+
                 <div className="relative">
                   <input
                   type={showPassword ? "text" : "password"}
-                  className=" px-3 pr-10 w-full text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  value={password}
+                  onChange={(e)=>{checkPassword(e.target.value)}}
+                  className={`px-3 pr-10 w-full text-sm border-1 outline-none ${passwordErrorMsg === "" ? "border-[#c08b4b94]" : "border-[#E85D4A]" } bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Password"
                   />
                   <button 
@@ -73,10 +171,16 @@ export default function SignUpPage(){
                   Confirm Password
                 </label>
 
+                <p className="text-xs text-[#E85D4A]">
+                  {confirmPasswordErrorMsg}
+                </p>
+
                 <div className="relative">
                   <input
                   type={showConfirmPassword ? "text" : "password"}
-                  className=" px-3 pr-10 w-full text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  value={confirmPassword}
+                  onChange={(e)=>{checkConfirmPassword(e.target.value)}}
+                  className={`px-3 pr-10 w-full text-sm border-1 outline-none ${confirmPasswordErrorMsg === "" ? "border-[#c08b4b94]" : "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Password"
                   />
                   <button 

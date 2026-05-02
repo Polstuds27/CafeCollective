@@ -8,6 +8,35 @@ import { useState } from "react";
 export default function SignInPage(){
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailErrorMsg, setEmailErrorMsg] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordErrorMsg, setPasswordErrorMsg] = useState(""); 
+
+  function checkEmail(email:string){
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(email === ""){
+      setEmailErrorMsg("Please enter your email.");
+    }else if(!regex.test(email)){
+      setEmailErrorMsg("Invalid email.");
+    }else{
+      setEmailErrorMsg("");
+    }
+
+    setEmail(email);
+  }
+
+  function checkPassword(password:string){
+    
+    if(password === ""){
+      setPasswordErrorMsg("Please enter you password.");
+    }else{
+      setPasswordErrorMsg("");
+    }
+
+    setPassword(password)
+  }
 
 
   return (
@@ -25,9 +54,16 @@ export default function SignInPage(){
                 <label className="text-sm">
                   Email
                 </label>
+
+                  <p className="text-xs text-[#E85D4A]">
+                    {emailErrorMsg}
+                  </p>
+
                 <input
                   type="text"
-                  className=" p-3 text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  onChange={(e)=>{checkEmail(e.target.value)}}
+                  value={email}
+                  className={`p-3 text-sm border-1 outline-none ${emailErrorMsg === "" ? "border-[#c08b4b94]": "border-[#E85D4A]"} bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Email"
                 />
               </span>
@@ -37,10 +73,16 @@ export default function SignInPage(){
                   Password
                 </label>
 
+                <p className="text-xs text-[#E85D4A]">
+                    {passwordErrorMsg}
+                </p>
+
                 <div className="relative">
                   <input
                   type={showPassword ? "text" : "password"}
-                  className=" px-3 pr-10 w-full text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  value={password}
+                  onChange={(e)=>{checkPassword(e.target.value)}}
+                  className={`px-3 pr-10 w-full text-sm border-1 outline-none ${passwordErrorMsg === "" ? "border-[#c08b4b94]" : "border-[#E85D4A]" } bg-[#553028d5] rounded-2xl h-10`}
                   placeholder="Password"
                   />
                   <button 
