@@ -5,9 +5,10 @@ import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
 
 
-export default function SignInPage(){
+export default function SignUpPage(){
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   return (
@@ -15,9 +16,9 @@ export default function SignInPage(){
       <div className="w-full h-full flex flex-col items-center">
         <Link href="/" className="text-2xl mb-4 text-[#c08b4b] font-bold">Cafe Collective</Link>
 
-        <div className="flex flex-col w-[350px] h-[500px] bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl pr-10 pl-10 pt-5 pb-5 items-center">
-            <h1 className="text-xl font-semibold text-white mb-[3px]">Welcome Back</h1>
-            <h2 className="text-sm mb-4">Sign In with your google account.</h2>
+        <div className="flex flex-col w-[350px]  bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl pr-10 pl-10 pt-5 pb-5 items-center">
+            <h1 className="text-xl font-semibold text-white mb-[3px]">Get Started</h1>
+            <h2 className="text-sm mb-4">Sign Up with your google account.</h2>
 
             <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-3">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4">
@@ -31,21 +32,35 @@ export default function SignInPage(){
 
             <div className="flex items-center gap-3 w-full mb-3">
               <div className="flex-1 h-px bg-[#c08b4b94]" />
-              <span className="text-xs  font-light">Or continue with</span>
+              <span className="text-sm  font-light">Or continue with</span>
               <div className="flex-1 h-px bg-[#c08b4b94]" />
             </div>
-          
+   
             <form className="flex flex-col w-full gap-3">
+            
+              <span className="flex flex-col w-full gap-1">
+                <label className="text-sm">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  className=" p-3 text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  placeholder="Username"
+                />
+              </span>
+            
+            
               <span className="flex flex-col w-full gap-1">
                 <label className="text-sm">
                   Email
                 </label>
                 <input
                   type="text"
-                  className=" p-3 text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  className=" p-3 border-1 text-sm outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
                   placeholder="Email"
                 />
               </span>
+
 
               <span className="flex flex-col w-full gap-1">
                 <label className="text-sm">
@@ -65,15 +80,34 @@ export default function SignInPage(){
                     {showPassword ? <EyeClosed className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
                   </button>
                 </div>
-                  <h2 className="text-xs text-end mt-1 hover:underline hover:text-[#c08b4b] cursor-pointer">Forgot Password?</h2>
               </span>
 
-              <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2">
-                Sign In
+              <span className="flex flex-col w-full gap-1">
+                <label className="text-sm">
+                  Confirm Password
+                </label>
+
+                <div className="relative">
+                  <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className=" px-3 pr-10 w-full text-sm border-1 outline-none border-[#c08b4b94] bg-[#553028d5] rounded-2xl h-10"
+                  placeholder="Password"
+                  />
+                  <button 
+                  type="button"
+                  onClick={()=>{setShowConfirmPassword(prev=>!prev)}}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer">
+                    {showConfirmPassword ? <EyeClosed className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
+                  </button>
+                </div>
+              </span>
+
+              <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2 mt-2">
+                Sign Up
               </button>
 
               <p className="text-wrap text-center w-full text-xs">
-                Don't have an account yet? <Link href="/sign-up" className="underline text-[#c08b4b]">Register here.</Link>
+                Already have an account? <Link href="/sign-in" className="underline text-[#c08b4b]">Sign in here.</Link>
                 </p>       
             </form>
 
