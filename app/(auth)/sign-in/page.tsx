@@ -92,7 +92,9 @@ export default function SignInPage(){
                     {showPassword ? <EyeClosed className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
                   </button>
                 </div>
-                  <Link href="/forgot-password" className="text-xs text-end mt-1 hover:underline hover:text-[#c08b4b] cursor-pointer">Forgot Password?</Link>
+                <span className="flex justify-end w-full ">
+                  <Link href="/forgot-password" className="text-xs mt-1 hover:underline hover:text-[#c08b4b] cursor-pointer">Forgot Password?</Link>
+                </span>
               </span>
 
               <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2">

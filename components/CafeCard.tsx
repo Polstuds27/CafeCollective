@@ -10,7 +10,7 @@ type featuredCardProps = {
 
 }
 
-export default function FeaturedCard({name, area, rating, tags, reviewsCount}: featuredCardProps){
+export default function CafeCard({name, area, rating, tags, reviewsCount}: featuredCardProps){
     return(
         <>
             <div className="w-[200px] h-[200px] flex flex-col p-4 bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl gap-2">

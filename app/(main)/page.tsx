@@ -1,11 +1,10 @@
 "use-client"
 
-import { Info, Search } from "lucide-react";
 import Link from "next/link"
-import FeaturedCard from "@/components/FeaturedCard";
+import CafeCard from "@/components/CafeCard";
 import InformationCard from "@/components/InformationCard";
 import ReviewCard from "@/components/ReviewCard";
-
+import Searchbar from "@/components/Searchbar";
 export default function HomePage() {
 
   const cafes = [
@@ -138,20 +137,7 @@ export default function HomePage() {
 
           <p className="font-light pl-25 pr-25 text-md text-center">Find hidden gems, read real reviews, and share discoveries with fellow coffee lovers across the Philippines.</p>
 
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex gap-3 p-1.5 items-center bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl">
-              <Search size={20} color="#c08b4b" className="ml-3"/>
-              <input
-              type="text"
-              className="pt-2 pb-2 pl-1 pr-1 outline-none border-none w-[400px]"
-              placeholder="Search cafes, areas, vibes..."
-              />
-              <button className="text-[14px] pr-4 pl-4 pt-1.5 pb-1.5 bg-[#c08b4b] text-black rounded-md cursor-pointer">Search</button>
-            </div>
-
-            <h3 className="text-xs font-light text-[#77746c]">Try "Poblacion", "cold brew", or "co-working"</h3>
-
-          </div>
+          <Searchbar/>
 
           <div className="flex gap-10 text-white">
             <span className="text-center m-5 gap-1.5 flex flex-col">
@@ -173,12 +159,12 @@ export default function HomePage() {
           <div className="flex justify-between w-full items-center">
             <h1 className="text-xl text-white">Featured cafes</h1>
 
-            <Link href="/" className="text-[#c08b4b] text-sm cursor-pointer">View all →</Link>
+            <Link href="/cafes" className="text-[#c08b4b] text-sm cursor-pointer">View all →</Link>
           </div>
 
           <div className="flex flex-wrap gap-5 justify-center">
             {cafes.map(cafe=>(
-              <FeaturedCard
+              <CafeCard
                 key={cafe.id}
                 name={cafe.name}
                 area={cafe.area}
