@@ -219,7 +219,7 @@ export default function HomePage() {
 
                     <div className="flex gap-2 mt-5">
                       <button className="text-[14px] pr-4 pl-4 pt-3 pb-3 bg-[#c08b4b] text-black rounded-xl cursor-pointer">Join for free</button>
-                      <button className="text-[14px] pr-4 pl-4 pt-3 pb-3 bg-[#412821d5] border-1 border-[#c08b4b94] rounded-xl gap-2 cursor-pointer">Add a café</button>
+                      <button className="text-[14px] pr-4 pl-4 pt-3 pb-3 bg-[#412821d5] border-1 border-[#c08b4b94] rounded-xl gap-2 cursor-pointer hover:bg-[#36211bd5]">Add a café</button>
                     </div>
                 </div>
         </section>

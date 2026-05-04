@@ -1,5 +1,6 @@
 
 import { Star } from "lucide-react";
+import Link from "next/link";
 
 type featuredCardProps = {
     name: string,
@@ -13,6 +14,7 @@ type featuredCardProps = {
 export default function CafeCard({name, area, rating, tags, reviewsCount}: featuredCardProps){
     return(
         <>
+        <Link href={"/cafes/1"}>
             <div className="w-[200px] h-[200px] flex flex-col p-4 bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl gap-2">
                 <span className="flex justify-between">
                     <h1 className="text-xl text-[#c08b4b] pt-1.5 pb-1.5 pl-3.5 pr-3.5 bg-[#70473f8a] rounded-xl">{name.charAt(0).toUpperCase()}</h1>
@@ -32,13 +34,16 @@ export default function CafeCard({name, area, rating, tags, reviewsCount}: featu
                 </span>
 
                 <span className="flex flex-wrap w-full gap-1">
-                    {tags.map(tag => (
-                        <p className="text-[10px]  p-1 bg-[#7a4c418a] rounded-xl">{tag}</p>   
+                    {tags.map((tag, idx) => (
+                        <p
+                        key={idx} 
+                        className="text-[10px]  p-1 bg-[#7a4c418a] rounded-xl">{tag}</p>   
                     ))}
                 </span>
 
                 <h1 className="text-[#77746c] text-xs mt-3">{reviewsCount} reviews</h1>
             </div>
+            </Link>
         </>
     );
 }
