@@ -38,11 +38,10 @@ export default function CafePage(){
 
     return(
         <>
-            <div className="flex flex-col w-full h-full items-center p-10 gap-5
-            ">
+            <div className="flex flex-col w-full h-full items-center p-10 gap-5">
                 <Searchbar/>
 
-                <div className="w-full flex flex-wrap gap-5 justify-center">
+                <div className="max-w-[800px] w-full h-full flex flex-wrap gap-5 justify-center">
                     {cafes.map(cafe=>(
                         <CafeCard
                              key={cafe.id}
