@@ -5,7 +5,7 @@ import CafeCard from "@/components/CafeCard";
 import InformationCard from "@/components/InformationCard";
 import ReviewCard from "@/components/ReviewCard";
 import Searchbar from "@/components/Searchbar";
-export default function HomePage() {
+export default function LandingPage() {
 
   const cafes = [
     {

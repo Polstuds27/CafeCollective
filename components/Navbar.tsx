@@ -1,21 +1,17 @@
-"use client"
+
 
 import Link from "next/link"
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Navbar(){
+import SignOutButton from "./SignOutButton";
 
-    const [navbarDisabled, setNavbarDisabled] = useState(false);
-    const pathName = usePathname();
-    
-    useEffect(()=>{
-        if(pathName === "/sign-in" || pathName === "sign-up") setNavbarDisabled(true);
-        else setNavbarDisabled(false);
-    },[pathName]);
 
-    if(navbarDisabled) return null;
-        
+export default async function Navbar(){
+
+    const supabase = await createClient();
+    const {data: {user} } = await supabase.auth.getUser();
+
+
     return(
     <>
         <nav className="flex w-full justify-between p-5 border-b-1 border-[#c08b4b94]">
@@ -24,10 +20,27 @@ export default function Navbar(){
             </Link>
 
             <div className="flex gap-10 items-center">
-                <Link className="text-[14px]" href={"/#explore"}>Explore</Link>
-                <Link className=" text-[14px]" href={"/#community"}>Community</Link>
-                <Link className="text-[14px]" href={"/sign-in"}>Sign In</Link>
-                <Link className=" text-[14px] pr-4 pl-4 pt-1.5 pb-1.5 bg-[#c08b4b] text-black rounded-md" href={"/sign-up"}>Sign Up</Link>
+
+                {user ? (
+                    <>
+                    <Link className="text-[14px]" href={"/cafes"}>Explore Cafes</Link>
+                    <Link className=" text-[14px]" href={"/community"}>Community</Link>
+                    <Link href={"/profile"}>
+                        <img className="w-8 h-8 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original" alt="" />
+                    </Link>
+                    <SignOutButton/>
+                    </>
+
+                ) : (
+                    <>
+                    <Link className="text-[14px]" href={"/#explore"}>Explore</Link>
+                    <Link className=" text-[14px]" href={"/#community"}>Community</Link>
+                    <Link className="text-[14px]" href={"/sign-in"}>Sign In</Link>
+                    <Link className=" text-[14px] pr-4 pl-4 pt-1.5 pb-1.5 bg-[#c08b4b] text-black rounded-md" href={"/sign-up"}>Sign Up</Link>    
+                    </>
+                )}
+                
+                
             </div>
         </nav>
     </>
