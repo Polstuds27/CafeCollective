@@ -5,6 +5,7 @@ import { Eye, EyeClosed } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import SuccessSignUpCard from "@/components/SuccessSignUpCard";
 
 export default function SignUpPage(){
 
@@ -26,6 +27,7 @@ export default function SignUpPage(){
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const [isSuccessful, setIsSuccessful] = useState(false);
 
   const hasUppercase = /[A-Z]/;
   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
@@ -36,12 +38,16 @@ export default function SignUpPage(){
   async function handleSignUp() {
     setLoading(true);
     setError("");
+    setIsSuccessful(false);
 
 
     if(isValidEmail && isValidPassword){
       const { error } = await supabase.auth.signUp({
         email,
-        password
+        password,
+        options : {
+          emailRedirectTo: "http://localhost:3000/sign-in"
+        }
       });
 
       if(error){
@@ -51,7 +57,7 @@ export default function SignUpPage(){
         setConfirmPasswordErrorMsg(" ");
         setEmailErrorMsg(" ");
       }else{
-        router.push("/sign-in");
+        setIsSuccessful(true);  
       }
 
       setLoading(false);
@@ -132,7 +138,16 @@ export default function SignUpPage(){
   }
 
 
-  return (
+  if(isSuccessful){
+    return( 
+      <div className="w-full h-full flex flex-col items-center">
+        <Link href="/" className="text-2xl mb-4 text-[#c08b4b] font-bold">Cafe Collective</Link>
+
+        <SuccessSignUpCard/>
+      </div>
+    )
+  }else{
+    return (
     <>
       <div className="w-full h-full flex flex-col items-center">
         <Link href="/" className="text-2xl mb-4 text-[#c08b4b] font-bold">Cafe Collective</Link>
@@ -258,9 +273,10 @@ export default function SignUpPage(){
           and{" "}
           <Link href="/privacy" className="underline hover:text-[#c08b4b] mx-1">Privacy Policy.</Link>
           {" "}Let's keep the community respectful and helpful.
-</span>
-
+        </span>
       </div>
     </>
   );
+  }
+  
 }
