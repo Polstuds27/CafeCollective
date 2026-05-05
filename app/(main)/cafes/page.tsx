@@ -1,5 +1,8 @@
+"use client"
+
 import Searchbar from "@/components/Searchbar";
 import CafeCard from "@/components/CafeCard";
+import { useEffect } from "react";
 
 export default function CafePage(){
 
@@ -36,9 +39,21 @@ export default function CafePage(){
   { id: 30, name: "Silid Coffee", area: "Cubao, QC", rating: 4.7, tags: ["Books", "Study-friendly"], reviewsCount: 139 },
   ];
 
+
+
+  useEffect(()=>{
+        
+  },[])
+
     return(
         <>
             <div className="flex flex-col w-full h-full items-center p-10 gap-5">
+
+                <span className="flex flex-col items-center">
+                    <h1 className="text-3xl font-semibold text-white mb-2">Explore Cafes</h1>
+                    <p className="text-sm text-[#C9A98A] mb-6">Discover great coffee spots across the Philippines</p>
+                </span>
+
                 <Searchbar/>
 
                 <div className="max-w-[800px] w-full h-full flex flex-wrap gap-5 justify-center">
