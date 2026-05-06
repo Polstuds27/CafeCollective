@@ -1,15 +1,53 @@
-// app/api/places/route.ts
+type FoursquarePlace = {
+  fsq_place_id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+
+  categories: {
+    fsq_category_id: string;
+    name: string;
+    short_name: string;
+    plural_name: string;
+    icon?: {
+      prefix: string;
+      suffix: string;
+    };
+  }[];
+
+  location?: {
+    address?: string;
+    locality?: string;
+    region?: string;
+    postcode?: string;
+    country?: string;
+    formatted_address?: string;
+  };
+
+  distance?: number;
+  link?: string;
+  tel?: string;
+  website?: string;
+
+  date_created?: string;
+  date_refreshed?: string;
+
+  social_media?: Record<string, string>;
+  related_places?: unknown;
+};
+
 export async function GET(request: Request) {
   const key = process.env.NEXT_FOURSQUARE_SERVICE_KEY;
   console.log("Key loaded:", key ? `${key.substring(0, 8)}...` : "UNDEFINED");
   console.log("KEY:", JSON.stringify(process.env.NEXT_FOURSQUARE_SERVICE_KEY));
 
   const res = await fetch(
-    "https://api.foursquare.com/v3/places/search?query=coffee&near=Manila,Philippines&limit=5",
+    "https://places-api.foursquare.com/places/search?query=coffee&near=Manila,Philippines&limit=5",
     {
       headers: {
         Accept: "application/json",
-        Authorization: key ?? "",
+        Authorization: `Bearer ${key}`,
+        "X-Places-Api-Version": "2025-06-17"
       },
     }
   );
@@ -18,5 +56,15 @@ export async function GET(request: Request) {
   console.log("Status:", res.status);
   console.log("Raw FSQ:", JSON.stringify(data, null, 2));
 
-  return Response.json({ status: res.status, data });
+  return Response.json(
+  data.results.map((p:FoursquarePlace) => ({
+    id: p.fsq_place_id,
+    name: p.name,
+    lat: p.latitude,
+    lng: p.longitude,
+    address: p.location?.formatted_address,
+    category: p.categories?.[0]?.name,
+    distance: p.distance,
+  }))
+);
 }
