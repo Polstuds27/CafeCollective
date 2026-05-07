@@ -42,7 +42,12 @@ export async function GET(request: Request) {
   console.log("KEY:", JSON.stringify(process.env.NEXT_FOURSQUARE_SERVICE_KEY));
 
   const res = await fetch(
-    "https://places-api.foursquare.com/places/search?query=coffee&near=Manila,Philippines&limit=5",
+    "https://places-api.foursquare.com/places/search" +
+    "?query=coffee" +
+    "&near=Manila,Philippines" +
+    "&limit=1"+
+    "&fields=fsq_place_id,name,location,latitude,longitude,categories,tel,social_media,date_refreshed,related_places",
+
     {
       headers: {
         Accept: "application/json",
@@ -56,15 +61,5 @@ export async function GET(request: Request) {
   console.log("Status:", res.status);
   console.log("Raw FSQ:", JSON.stringify(data, null, 2));
 
-  return Response.json(
-  data.results.map((p:FoursquarePlace) => ({
-    id: p.fsq_place_id,
-    name: p.name,
-    lat: p.latitude,
-    lng: p.longitude,
-    address: p.location?.formatted_address,
-    category: p.categories?.[0]?.name,
-    distance: p.distance,
-  }))
-);
+  return Response.json(data);
 }
