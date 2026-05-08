@@ -54,11 +54,12 @@ export default function CafePage(){
                     <p className="text-sm text-[#C9A98A] mb-6">Discover great coffee spots across the Philippines</p>
                 </span>
 
-                <Searchbar/>
+                {/**<Searchbar/>**/}
 
                 <div className="max-w-[800px] w-full h-full flex flex-wrap gap-5 justify-center">
                     {cafes.map(cafe=>(
                         <CafeCard
+                            id={`${cafe.id}`}
                              key={cafe.id}
                             name={cafe.name}
                             area={cafe.area}

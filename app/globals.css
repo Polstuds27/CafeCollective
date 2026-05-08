@@ -8,6 +8,23 @@
 html {
   scroll-behavior: smooth;
 }
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+ 
+}
+
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  
+}
 
 @theme inline {
   --background: var(--background);

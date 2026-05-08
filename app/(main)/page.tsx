@@ -1,4 +1,3 @@
-"use-client"
 
 import Link from "next/link"
 import CafeCard from "@/components/CafeCard";
@@ -7,8 +6,19 @@ import ReviewCard from "@/components/ReviewCard";
 import Searchbar from "@/components/Searchbar";
 import {Cafe, CafeCardProps} from "@/types/Cafe";
 import { mapCafeToCard } from "@/lib/mapRecommendedCafes";
+import  { truncateString }  from "@/lib/stringUtils";
 
-export default async function LandingPage() {
+type Props = {
+  searchParams: Promise<{
+    q?: string;
+  }>;
+};
+
+export default async function LandingPage({
+  searchParams,
+}:Props) {
+
+  const params = await searchParams;
 
 
   const information = [
@@ -88,6 +98,23 @@ export default async function LandingPage() {
 
   const cafes = recommendedPlaceData?.results?.map((cafe: Cafe) => mapCafeToCard(cafe));
 
+  const query = await params.q || "";
+  let searchedCafes: CafeCardProps[] = [];
+
+  if (query) {
+    const searchResult = await fetch(
+      `http://localhost:3000/api/places/search?q=${query}`
+    );
+
+    const data = await searchResult.json();
+
+    searchedCafes =
+      data?.results?.map((cafe: Cafe) =>
+        mapCafeToCard(cafe)
+      ) || [];
+  }
+  console.log(searchedCafes);
+
 
   return (
    <>
@@ -100,6 +127,33 @@ export default async function LandingPage() {
           <p className="font-light pl-25 pr-25 text-md text-center">Find hidden gems, read real reviews, and share discoveries with fellow coffee lovers across the Philippines.</p>
 
           <Searchbar/>
+
+          {searchedCafes.length > 0 ? (<>
+          
+          <h1>Searched results for "{query}"</h1>
+          <div className="flex flex-wrap gap-5 justify-center max-h-75 overflow-y-auto">
+              {searchedCafes.map((cafe: CafeCardProps) => (
+                <CafeCard
+                id={cafe.id}
+                key={cafe.id}
+                name={truncateString(cafe.name, 12)}
+                area={cafe.area}
+                rating={0.0}
+                tags={cafe.tags.slice(0,2)}
+                reviewsCount={0}
+              />
+              ))}
+            </div>
+          
+          </>
+            
+          ): params.q ?(
+            <div className="flex flex-wrap gap-5 justify-center">
+              <h1>No Available Cafes</h1>
+            </div>
+          ) : (
+            <></>
+          )}
 
           <div className="flex gap-10 text-white">
             <span className="text-center m-5 gap-1.5 flex flex-col">
@@ -129,7 +183,7 @@ export default async function LandingPage() {
               <CafeCard
                 id={cafe.id}
                 key={cafe.id}
-                name={cafe.name}
+                name={truncateString(cafe.name, 12)}
                 area={cafe.area}
                 rating={0.0}
                 tags={cafe.tags.slice(0,2)}
