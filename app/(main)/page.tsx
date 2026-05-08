@@ -5,58 +5,11 @@ import CafeCard from "@/components/CafeCard";
 import InformationCard from "@/components/InformationCard";
 import ReviewCard from "@/components/ReviewCard";
 import Searchbar from "@/components/Searchbar";
-export default function LandingPage() {
+import {Cafe, CafeCardProps} from "@/types/Cafe";
+import { mapCafeToCard } from "@/lib/mapRecommendedCafes";
 
-  const cafes = [
-    {
-      id: 1,
-      name: "Yardstick Coffee",
-      area: "Poblacion, Makati",
-      rating: 4.9,
-      tags: ["Specialty", "Pour Over"],
-      reviewsCount: 214,
-    },
-    {
-      id: 2,
-      name: "The Curator",
-      area: "Legazpi Village, BGC",
-      rating: 4.8,
-      tags: ["Cocktails", "Coffee"],
-      reviewsCount: 189,
-    },
-    {
-      id: 3,
-      name: "Craft Coffee",
-      area: "San Juan",
-      rating: 4.7,
-      tags: ["Cold Brew", "Chill Vibe"],
-      reviewsCount: 143,
-    },
-    {
-      id: 4,
-      name: "Commune",
-      area: "Pasay",
-      rating: 4.7,
-      tags: ["Co-working", "Espresso"],
-      reviewsCount: 176,
-    },
-    {
-      id: 5,
-      name: "Toby's Estate",
-      area: "BGC",
-      rating: 4.8,
-      tags: ["Brunch", "Roastery"],
-      reviewsCount: 231,
-    },
-    {
-      id: 6,
-      name: "Habitual Coffee",
-      area: "Kapitolyo, Pasig",
-      rating: 4.6,
-      tags: ["Minimalist", "Filter"],
-      reviewsCount: 98,
-    },
-  ]
+export default async function LandingPage() {
+
 
   const information = [
     {
@@ -126,6 +79,15 @@ export default function LandingPage() {
 
 
 
+  const res = await fetch(
+    "http://localhost:3000/api/places/recommended",
+    {next: {revalidate: 3600}}
+  );
+
+  const recommendedPlaceData = await res.json();
+
+  const cafes = recommendedPlaceData?.results?.map((cafe: Cafe) => mapCafeToCard(cafe));
+
 
   return (
    <>
@@ -163,14 +125,15 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-wrap gap-5 justify-center">
-            {cafes.map(cafe=>(
+            {cafes.slice(0,6).map((cafe: CafeCardProps) =>(
               <CafeCard
+                id={cafe.id}
                 key={cafe.id}
                 name={cafe.name}
                 area={cafe.area}
-                rating={cafe.rating}
-                tags={cafe.tags}
-                reviewsCount={cafe.reviewsCount}
+                rating={0.0}
+                tags={cafe.tags.slice(0,2)}
+                reviewsCount={0}
               />
             ))}
 

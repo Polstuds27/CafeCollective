@@ -7,14 +7,15 @@ type featuredCardProps = {
     area: string,
     rating: number,
     reviewsCount: number
-    tags: string[]
+    tags: string[],
+    id: string
 
 }
 
-export default function CafeCard({name, area, rating, tags, reviewsCount}: featuredCardProps){
+export default function CafeCard({name, area, rating, tags, reviewsCount, id}: featuredCardProps){
     return(
         <>
-        <Link href={"/cafes/1"}>
+        <Link href={`/cafes/${id}`}>
             <div className="w-[200px] h-[200px] flex flex-col p-4 bg-[#442721d5] border-1 border-[#c08b4b94] rounded-xl gap-2">
                 <span className="flex justify-between">
                     <h1 className="text-xl text-[#c08b4b] pt-1.5 pb-1.5 pl-3.5 pr-3.5 bg-[#70473f8a] rounded-xl">{name.charAt(0).toUpperCase()}</h1>
