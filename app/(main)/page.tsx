@@ -95,8 +95,12 @@ export default async function LandingPage({
   );
 
   const recommendedPlaceData = await res.json();
+  console.log(recommendedPlaceData.source);
+  console.log(recommendedPlaceData.results);
+  const cafes = recommendedPlaceData.results.map((cafe: Cafe) => mapCafeToCard(cafe));
+  console.log(cafes);
+ 
 
-  const cafes = recommendedPlaceData?.results?.map((cafe: Cafe) => mapCafeToCard(cafe));
 
   const query = await params.q || "";
   let searchedCafes: CafeCardProps[] = [];
@@ -132,10 +136,10 @@ export default async function LandingPage({
           
           <h1>Searched results for "{query}"</h1>
           <div className="flex flex-wrap gap-5 justify-center max-h-75 overflow-y-auto">
-              {searchedCafes.map((cafe: CafeCardProps) => (
+              {searchedCafes.map((cafe: CafeCardProps, idx: any) => (
                 <CafeCard
                 id={cafe.id}
-                key={cafe.id}
+                key={idx}
                 name={truncateString(cafe.name, 12)}
                 area={cafe.area}
                 rating={0.0}
@@ -179,10 +183,10 @@ export default async function LandingPage({
           </div>
 
           <div className="flex flex-wrap gap-5 justify-center">
-            {cafes.slice(0,6).map((cafe: CafeCardProps) =>(
+            {cafes.slice(0,6).map((cafe: CafeCardProps, idx: any) =>(
               <CafeCard
                 id={cafe.id}
-                key={cafe.id}
+                key={idx}
                 name={truncateString(cafe.name, 12)}
                 area={cafe.area}
                 rating={0.0}

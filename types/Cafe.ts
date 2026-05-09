@@ -19,6 +19,7 @@ export type CafeLocation = {
 };
 
 export type Cafe = {
+  id:string,
   fsq_place_id: string;
   name: string;
   location: CafeLocation;
