@@ -1,7 +1,14 @@
 
 import { parseSearchQuery } from "@/lib/parseSearchQuery";
+import { createClient } from "@supabase/supabase-js";
+import { bundleResponse } from "@/lib/bundleResponse";
 
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_SUPABASE_SERVICE_KEY!
+)
 
+export const revalidate = 3600;
 export async function GET(request: Request) {
   const key = process.env.NEXT_FOURSQUARE_SERVICE_KEY;
   const {searchParams} = new URL(request.url);
@@ -10,6 +17,19 @@ export async function GET(request: Request) {
   const {city, keyword} = parseSearchQuery(raw);
 
   const fetchUrl = new URL("https://places-api.foursquare.com/places/search");
+
+  const {data: cached,error} = await supabase
+  .from("coffee_shops")
+  .select("*")
+  .or(`city.ilike%${city}%`)
+  .limit(30);
+
+  if (error) console.error("Cache error:", error.message);
+
+  if (cached && cached.length > 0) {
+    return Response.json({ results: cached.map(bundleResponse), source: "cache" });
+  }
+
 
   fetchUrl.searchParams.set("query", keyword);
   fetchUrl.searchParams.set(`near`, `${city}, Philippines`);
@@ -32,5 +52,33 @@ export async function GET(request: Request) {
   );
 
   const data = await res.json();
-  return Response.json(data);
+
+  if(!data.results || data.results.length === 0){
+        return Response.json({result: [],  source: "api"});
+    };
+
+  const rows = data.results.map((place: any) => ({
+          fsq_place_id: place.fsq_place_id,
+          name: place.name,
+          address: place.location?.formatted_address,
+          city: place.location?.locality || city,
+          region: place.location?.region,
+          lat: place.latitude,
+          lng: place.longitude,
+          categories: place.categories,
+          tel: place.tel || null,
+          social_media: place.social_media || null,
+          date_refreshed: place.date_refreshed || null,
+          related_places: place.related_places || null,
+    }));
+  
+     const { error: upsertError } = await supabase
+      .from("coffee_shops")
+      .upsert(rows, { onConflict: "fsq_place_id" });
+  
+    if (upsertError) {
+      console.error("Supabase upsert error:", upsertError);
+    }
+  
+    return Response.json({results: rows.map(bundleResponse), source: "api"});
 }
