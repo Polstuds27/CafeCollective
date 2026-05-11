@@ -33,8 +33,6 @@ export default function SignUpPage(){
   const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
   const hasNumber = /[0-9]/;
 
-
-
   async function handleSignUp() {
     setLoading(true);
     setError("");
@@ -42,17 +40,21 @@ export default function SignUpPage(){
 
 
     if(isValidEmail && isValidPassword){
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options : {
-          emailRedirectTo: "http://localhost:3000/sign-in"
-        }
+      const res = await fetch("http://localhost:3000/api/auth/sign-up",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          username: username
+        }),
       });
 
-      if(error){
-        setError(error.message);
-        setUsernameErrorMsg(error.message);
+      const data = await res.json()
+
+      if(data.error){
+        setError(data.error);
+        setUsernameErrorMsg(data.error);
         setPasswordErrorMsg(" ");
         setConfirmPasswordErrorMsg(" ");
         setEmailErrorMsg(" ");
@@ -64,8 +66,6 @@ export default function SignUpPage(){
     }
     
   }
-
-
 
   function checkEmail(email:string){
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
