@@ -60,6 +60,30 @@ export default function ResetPasswordPage(){
       setConfirmPassword(confirmPassword);
     }
 
+    async function handleResetPassword(){
+      if(password === confirmPassword){
+        const res = await fetch("http://localhost:3000/api/auth/reset-password", {
+          method:"POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            password: password
+          })
+        });
+
+      const data = await res.json();
+
+      if(data.error){
+        setPasswordErrorMsg(data.error)
+        setConfirmPasswordErrorMsg(" ");
+        console.log(data.error);
+      }else{
+        setPasswordErrorMsg("");
+        setConfirmPasswordErrorMsg("");
+      }
+
+      }
+    }
+
 
   return (
     <>
@@ -124,7 +148,9 @@ export default function ResetPasswordPage(){
                 </div>
               </span>
 
-              <button className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2 mt-1">
+              <button 
+                onClick={()=>{handleResetPassword()}}
+                className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2 mt-1">
                 Reset Password
               </button>
        

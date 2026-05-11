@@ -24,6 +24,27 @@ export default function ForgotPasswordPage(){
     setEmail(email);
   }
 
+  async function handleForgotPassword(){
+    if(email){
+      const res = await fetch("http://localhost:3000/api/auth/forgot-password",{
+        method:"POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          email: email
+        })
+      });
+      
+      const data = await res.json();
+
+      if(data.error){
+        console.log(data.error)
+        setEmailErrorMsg(data.error);
+      }else{
+        setEmailErrorMsg("");
+      }
+    }
+  }
+
   return (
     <>
       <div className="w-full h-full flex flex-col items-center">
@@ -60,7 +81,7 @@ export default function ForgotPasswordPage(){
 
               <button
                 type="button"
-                onClick={()=> router.push("/reset-password")}
+                onClick={()=>handleForgotPassword()}
                 className="flex w-full justify-center gap-2 items-center cursor-pointer bg-[#c08b4b] text-black p-2 rounded-2xl mb-2">
                 Next
               </button>
