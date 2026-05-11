@@ -30,7 +30,6 @@ export async function GET(request: Request){
         return Response.json({ results: cached.map(bundleResponse), source: "cache" });
     }
 
-    console.log("Cache miss — fetching from FSQ 🌐");
     fetchUrl.searchParams.set("query", keyword);
     fetchUrl.searchParams.set(`near`, `${city}, Philippines`);
     fetchUrl.searchParams.set("categories", "13032,13035");
