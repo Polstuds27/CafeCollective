@@ -25,22 +25,32 @@ export default function SignInPage(){
   async function handleSignIn(){
     setLoading(false);
     setError("");
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
+
+    if(isValidEmail && isValidPassword){
+       const res = await fetch("http://localhost:3000/api/auth/sign-in",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          email: email,
+          password: password
+      }),
     });
+
+     const data = await res.json();
     
-    if(error){
-      setError(error.message);
-      console.log(error.message);
-      setEmailErrorMsg(error.message);
+    if(data.error){
+      setError(data.error);
+      console.log(data.error);
+      setEmailErrorMsg(data.error);
       setPasswordErrorMsg(" ");
     }else{
-      router.replace("/home");
+      router.replace("/");
+      router.refresh();
     }
 
     setLoading(false);
+    }
+    
   }
 
 

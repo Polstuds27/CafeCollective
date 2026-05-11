@@ -6,14 +6,6 @@ import CafeMapWrapper from "@/components/CafeMapWrapper";
 
 export default async function CafeInfoPage({ params }: {params: {id: string}}){
     
-    const tags = [
-        "Specialty",
-        "Pour Over",
-        "Wi-fi",
-        "Co-Working",
-        "Quiet"
-    ];
-
 
     const openingHours = null;
 
@@ -153,9 +145,7 @@ export default async function CafeInfoPage({ params }: {params: {id: string}}){
                         {reviews.length > 2 && (<Link href="/" className="text-[#c08b4b] text-xs cursor-pointer">See All →</Link>)}
                     </span>
                     
-
                     {
-                    
                     reviews.length === 0 ? 
                     
                     (<h2 className="text-sm font-medium">No reviews.</h2>) :
